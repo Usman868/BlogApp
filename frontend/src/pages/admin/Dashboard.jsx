@@ -11,13 +11,14 @@ export const Dashboard = () => {
   });
 
   const fetchDashboard = async () => {
-    console.log(dashboardData)
     await setDashboardData(dashboard_data);
+
   };
 
   useEffect(() => {
     fetchDashboard();
   }, []);
+    console.log(dashboardData)
 
   return (
     <div className="flex-1 p-4 md:p-10 bg-blue-50/50">
