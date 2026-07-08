@@ -7,15 +7,17 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "server":"nodemon server.js",
+    "server": "nodemon server.js",
     "start": "node server.js"
   },
   "dependencies": {
+    "@imagekit/nodejs": "^7.9.1",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.4",
-    "multer": "^2.2.0"
+    "multer": "^2.2.0",
+    "nodemon": "^3.1.14"
   }
 }
