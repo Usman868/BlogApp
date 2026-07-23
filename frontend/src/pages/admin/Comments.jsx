@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { comments_data } from "../../assets/assets";
 import { CommentTableItem } from "../../components/admin/CommentTableItem";
+import { useAppContext } from "../../context/AppContext";
 
 export const Comments = () => {
   const [comments, setComments] = useState([]);
   const [filter, setFilter] = useState("Not Approved");
 
-  const fetchComments = async () => [setComments(comments_data)];
+  const { axios } = useAppContext();
+
+  const fetchComments = async () => {
+    try {
+      const { data } = await axios.get("/api/admin/comments");
+      data.success ? setComments(data.comments) : toast.error(data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   useEffect(() => {
     fetchComments();
   }, []);
@@ -34,13 +44,13 @@ export const Comments = () => {
         <table className="w-full text-sm text-gray-500">
           <thead className="text-xs text-gray-700 text-left uppercase">
             <tr>
-              <th scope="col" class="px-6 py-3">
+              <th scope="col" className="px-6 py-3">
                 Blog Title & Comment
               </th>
-              <th scope="col" class="px-6 py-3 max-sm:hidden">
+              <th scope="col" className="px-6 py-3 max-sm:hidden">
                 Date
               </th>
-              <th scope="col" class="px-6 py-3">
+              <th scope="col" className="px-6 py-3">
                 Action
               </th>
             </tr>
