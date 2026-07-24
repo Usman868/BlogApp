@@ -9,16 +9,21 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
+
   const [token, setToken] = useState(null);
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
 
   const fetchBlogs = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get("/api/blog/all");
       data.success ? setBlogs(data.blogs) : toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -29,7 +34,7 @@ export const AppProvider = ({ children }) => {
       setToken(token);
       axios.defaults.headers.common["Authorization"] = `${token}`;
     }
-  }, [fetchBlogs]);
+  }, []);
 
   const value = {
     axios,
@@ -38,6 +43,7 @@ export const AppProvider = ({ children }) => {
     setToken,
     blogs,
     setBlogs,
+    loading,
     input,
     setInput,
   };

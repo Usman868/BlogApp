@@ -3,10 +3,11 @@ import { blog_data, blogCategories } from "../assets/assets";
 import { motion, spring } from "motion/react";
 import { BlogCard } from "./BlogCard";
 import { useAppContext } from "../context/AppContext";
+import BlogCardSkeleton from "./BlogCardSkeleton";
 
 export const BlogList = () => {
   const [menu, setMenu] = useState("All");
-  const { blogs=[], input } = useAppContext();
+  const { blogs = [], input, loading } = useAppContext();
 
   const filterBlogs = () => {
     if (input === "") {
@@ -41,10 +42,15 @@ export const BlogList = () => {
         ))}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 mb-24 mx-8 sm:mx-16 xl:mx-40">
-        {filterBlogs().filter((blog) => (menu === "All" ? true : blog.category === menu))
-          .map((blog) => (
-            <BlogCard key={blog._id} blog={blog} />
-          ))}
+        {loading
+          ? Array.from({ length: 6 }).map((_, index) => (
+              <BlogCardSkeleton key={index} />
+            ))
+          : filterBlogs()
+              .filter((blog) =>
+                menu === "All" ? true : blog.category === menu,
+              )
+              .map((blog) => <BlogCard key={blog._id} blog={blog} />)}
       </div>
     </div>
   );
